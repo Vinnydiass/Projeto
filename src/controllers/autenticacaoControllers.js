@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-console.log('JWT_SECRET:', JWT_SECRET);
-
 async function registrar(req, res) {
     const { nome, email, senha, genero, dataNascimento } = req.body;
 

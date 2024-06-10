@@ -133,95 +133,87 @@ async function getMediaNotasPorTitulo(req, res) {
     try {
         const { titulo } = req.params;
 
-        
         const filme = await Filme.findOne({ titulo });
         if (!filme) {
             return res.status(404).json({ mensagem: "Filme não encontrado!" });
         }
 
-        
         const avaliacoes = await Avaliacao.find({ filme: filme._id });
-
         if (avaliacoes.length === 0) {
             return res.status(404).json({ mensagem: "Nenhuma avaliação encontrada para este filme!" });
         }
 
         const somaNotas = avaliacoes.reduce((total, avaliacao) => total + avaliacao.nota, 0);
-        const mediaNotas = somaNotas / avaliacoes.length;
+        const mediaNotas = (somaNotas / avaliacoes.length).toFixed(1); 
 
         res.status(200).json({ 
             mensagem: "Média das notas calculada com sucesso",
             titulo: filme.titulo,
-            mediaNotas
+            mediaNotas: parseFloat(mediaNotas) 
         });
     } catch (error) {
         res.status(500).json({ mensagem: "Erro ao calcular média das notas", erro: error.message });
     }
 }
+
+
+
 
 
 async function getMediaNotasPorTituloSerie(req, res) {
     try {
         const { titulo } = req.params;
 
-        
         const serie = await Serie.findOne({ titulo });
         if (!serie) {
             return res.status(404).json({ mensagem: "Série não encontrada!" });
         }
 
-        
-     const avaliacoes = await Avaliacao.find({ serie: serie._id });
-
+        const avaliacoes = await Avaliacao.find({ serie: serie._id });
         if (avaliacoes.length === 0) {
             return res.status(404).json({ mensagem: "Nenhuma avaliação encontrada para esta série!" });
         }
 
-        
         const somaNotas = avaliacoes.reduce((total, avaliacao) => total + avaliacao.nota, 0);
-        const mediaNotas = somaNotas / avaliacoes.length;
+        const mediaNotas = (somaNotas / avaliacoes.length).toFixed(1); 
 
         res.status(200).json({ 
             mensagem: "Média das notas calculada com sucesso",
             titulo: serie.titulo,
-            mediaNotas
+            mediaNotas: parseFloat(mediaNotas) 
         });
     } catch (error) {
         res.status(500).json({ mensagem: "Erro ao calcular média das notas", erro: error.message });
     }
 }
 
-// Função para calcular a média das notas por título da novela
 async function getMediaNotasPorTituloNovela(req, res) {
     try {
         const { titulo } = req.params;
 
-        // Encontra a novela pelo título
         const novela = await Novela.findOne({ titulo });
         if (!novela) {
             return res.status(404).json({ mensagem: "Novela não encontrada!" });
         }
 
-        // Encontra todas as avaliações relacionadas à novela
         const avaliacoes = await Avaliacao.find({ novela: novela._id });
-
         if (avaliacoes.length === 0) {
             return res.status(404).json({ mensagem: "Nenhuma avaliação encontrada para esta novela!" });
         }
 
-        // Calcula a média das notas
         const somaNotas = avaliacoes.reduce((total, avaliacao) => total + avaliacao.nota, 0);
-        const mediaNotas = somaNotas / avaliacoes.length;
+        const mediaNotas = (somaNotas / avaliacoes.length).toFixed(1); 
 
         res.status(200).json({ 
             mensagem: "Média das notas calculada com sucesso",
             titulo: novela.titulo,
-            mediaNotas
+            mediaNotas: parseFloat(mediaNotas) 
         });
     } catch (error) {
         res.status(500).json({ mensagem: "Erro ao calcular média das notas", erro: error.message });
     }
 }
+
 
 module.exports = {
     create,
